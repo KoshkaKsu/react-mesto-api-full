@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require('../models/user');
 
 const Error400 = 400;
 const Error404 = 404;
@@ -9,22 +9,22 @@ module.exports.getUsers = (req, res) => {
     .then((users) => {
       res.status(200).send(users);
     })
-    .catch(() => res.status(Error500).send({ message: "Ошибка по умолчанию." }));
+    .catch(() => res.status(Error500).send({ message: 'Ошибка по умолчанию.' }));
 };
 
 module.exports.getUserByID = (req, res) => {
   User.findById(req.params.userId)
-    .orFail(new Error("IncorrectID"))
+    .orFail(new Error('IncorrectID'))
     .then((user) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === "CastError") {
-        res.status(Error400).send({ message: "Переданы некорректные данные при создании пользователя." });
-      } else if (err.message === "IncorrectID") {
-        res.status(Error404).send({ message: "Пользователь по указанному _id не найден." });
+      if (err.name === 'CastError') {
+        res.status(Error400).send({ message: 'Переданы некорректные данные при создании пользователя.' });
+      } else if (err.message === 'IncorrectID') {
+        res.status(Error404).send({ message: 'Пользователь по указанному _id не найден.' });
       } else {
-        res.status(Error500).send({ message: "Ошибка по умолчанию." });
+        res.status(Error500).send({ message: 'Ошибка по умолчанию.' });
       }
     });
 };
@@ -33,13 +33,13 @@ module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
     .then((user) => {
-      res.status(200).send(user);
+      res.status(200).send({ data: user });
     })
     .catch((err) => {
-      if (err.name === "ValidationError") {
-        res.status(Error400).send({ message: "Переданы некорректные данные при создании пользователя." });
+      if (err.name === 'ValidationError') {
+        res.status(Error400).send({ message: err.message });
       } else {
-        res.status(Error500).send({ message: "Ошибка по умолчанию." });
+        res.status(Error500).send({ message: 'Ошибка по умолчанию.' });
       }
     });
 };
@@ -53,17 +53,17 @@ module.exports.updateProfile = (req, res) => {
       runValidators: true,
       upsert: false,
     })
-    .orFail(new Error("IncorrectID"))
+    .orFail(new Error('IncorrectID'))
     .then((user) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.message === "IncorrectID") {
-        res.status(Error404).send({ message: "Пользователь по указанному _id не найден." });
-      } else if (err.name === "ValidationError") {
-        res.status(Error400).send({ message: "Переданы некорректные данные при обновлении профиля." });
+      if (err.message === 'IncorrectID') {
+        res.status(Error404).send({ message: 'Пользователь по указанному _id не найден.' });
+      } else if (err.name === 'ValidationError') {
+        res.status(Error400).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
       } else {
-        res.status(Error500).send({ message: "Ошибка по умолчанию." });
+        res.status(Error500).send({ message: 'Ошибка по умолчанию.' });
       }
     });
 };
@@ -77,15 +77,15 @@ module.exports.updateAvatar = (req, res) => {
       runValidators: true,
       upsert: false,
     })
-    .orFail(new Error("IncorrectID"))
+    .orFail(new Error('IncorrectID'))
     .then((user) => { res.status(200).send(user); })
     .catch((err) => {
-      if (err.message === "IncorrectID") {
-        res.status(Error404).send({ message: "Пользователь по указанному _id не найден." });
+      if (err.message === 'IncorrectID') {
+        res.status(Error404).send({ message: 'Пользователь по указанному _id не найден.' });
       } else if (err.errors) {
-        res.status(Error400).send({ message: "Переданы некорректные данные при обновлении аватара." });
+        res.status(Error400).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
       } else {
-        res.status(Error500).send({ message: "Ошибка по умолчанию." });
+        res.status(Error500).send({ message: 'Ошибка по умолчанию.' });
       }
     });
 };
