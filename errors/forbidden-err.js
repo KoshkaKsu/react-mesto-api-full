@@ -1,3 +1,4 @@
+// 403 — попытка удалить чужую карточку
 class ForbiddenError extends Error {
   constructor(message) {
     super(message);

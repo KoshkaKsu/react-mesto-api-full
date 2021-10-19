@@ -11,7 +11,7 @@ router.post('/cards', celebrate({
     name: Joi.string().min(2).max(30).required(),
     link: Joi.string().required().custom((value) => {
       if (!isURL(value)) {
-        throw new Error('Ссылка некоректная');
+        throw new Error('Введен корректный адрес!');
       }
       return value;
     }),
