@@ -47,11 +47,9 @@ const getUserMe = (req, res, next) => {
     .orFail(new NotFoundError('Пользователь с таким id не найден!'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.message === 'NotValidId' || err.name === 'CastError') {
-        next(new NotFoundError('Пользователь с таким id не найден!'));
-      } else {
-        next(err);
-      }
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Некоректный запрос!'));
+      } else next(err);
     });
 };
 
@@ -62,11 +60,7 @@ const getUserByID = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Некоректный запрос!'));
-      } else if (err.message === 'IncorrectID') {
-        next(new NotFoundError('Пользователь с таким id не найден!'));
-      } else {
-        next(err);
-      }
+      } else next(err);
     });
 };
 
@@ -74,24 +68,24 @@ const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-  if (!email || !password) {
-    throw new BadRequestError('Введите электронную почту и пароль!');
-  }
   bcrypt.hash(password, 10).then((hash) => User.create({
     name, about, avatar, email, password: hash,
-  }))
-    .then((user) => {
-      res.send(user);
-    })
+  }).then((user) => {
+    res.status(200).send({
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+      email: user.email,
+      _id: user._id,
+    });
+  })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некоректные данные для создания пользователя!'));
       } else if (err.name === 'MongoError' && err.code === 11000) { //  случай, когда пользователь пытается зарегистрироваться по уже существующему в базе email
         next(new ConflictError('Такой пользователь уже зарегистрирован!'));
-      } else {
-        next(err);
-      }
-    });
+      } else next(err);
+    }));
 };
 
 const updateProfile = (req, res, next) => {
@@ -108,11 +102,7 @@ const updateProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некоректные данные при обновления профиля!'));
-      } else if (err.message === 'NotFound') {
-        next(new NotFoundError('Неверный id пользователя!'));
-      } else {
-        next(err);
-      }
+      } else next(err);
     });
 };
 
@@ -130,11 +120,7 @@ const updateAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некоректные данные при обновления аватара!'));
-      } else if (err.message === 'NotFound') {
-        next(new NotFoundError('Неверный id пользователя!'));
-      } else {
-        next(err);
-      }
+      } else next(err);
     });
 };
 

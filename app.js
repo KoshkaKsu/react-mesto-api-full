@@ -22,8 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(3).max(15),
-    about: Joi.string().min(3).max(15),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
     avatar: Joi.string().regex(/^(https?:\/\/)?([\da-z\\.-]+)\.([a-z\\.]{2,6})([/\w \\.-]*)*\/?$/),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(4),
