@@ -1,0 +1,11 @@
+.profile__info-block {
+    position: relative;
+}
+
+.profile__info-block:hover .profile__edit-button-avatar{
+    opacity: 1;
+}
+
+.profile__info-block:hover .profile__avatar{
+    opacity: 0.6;
+}
