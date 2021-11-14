@@ -89,8 +89,8 @@ class Api {
 }
 
 const config = {
-	//address: 'https://api.mesto.autors.nomoredomains.icu',
-	address: 'http://localhost:3000',
+	address: 'https://api.mesto.autors.nomoredomains.icu',
+	//address: 'http://localhost:3000',
 	headers: {
 		'Content-type': 'application/json',
 		'Authorization': `Bearer ${localStorage.getItem('token')}`,
