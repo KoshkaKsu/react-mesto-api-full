@@ -12,7 +12,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const app = express();
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://mesto.autors.nomoredomains.work'],
+  origin: ['http://localhost:3000', 'https://api.mesto.autors.nomoredomains.icu', 'https://mesto.autors.nomoredomains.work'],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Methods', 'Access-Control-Request-Headers', 'Access-Control-Allow-Origin'],
   credentials: true,

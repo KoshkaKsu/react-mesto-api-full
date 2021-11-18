@@ -26,7 +26,7 @@ function Login(props) {
 					type="email"
 					autoComplete="username"
 					name="email"
-					value={email}
+					value={email || ''}
 					onChange={changeEmail}
 					placeholder="Email"
 					required
@@ -36,7 +36,7 @@ function Login(props) {
 					type="password"
 					autoComplete="new-password"
 					name="password"
-					value={password}
+					value={password || ''}
 					onChange={changePassword}
 					placeholder="Пароль"
 					required

@@ -12,14 +12,13 @@ class Api {
 	}
 
 	getUserInfo(token) {
-		console.log('getUserInfo в utils/api: ' + token);
 		return fetch(`${this._url}/users/me`, {
 			method: 'GET',
 			headers: this._headers,
 		}).then(this._getResponseData);
 	}
 
-	getInitialCards() {
+	getInitialCards(token) {
 		return fetch(`${this._url}/cards`, {
 			method: 'GET',
 			headers: this._headers,
@@ -59,14 +58,14 @@ class Api {
 	}
 
 	setLike(id) {
-		return fetch(`${this._url}/cards/likes/${id}`, {
+		return fetch(`${this._url}/cards/${id}/likes`, {
 			method: 'PUT',
 			headers: this._headers,
 		}).then(this._getResponseData);
 	}
 
 	unLike(id) {
-		return fetch(`${this._url}/cards/likes/${id}`, {
+		return fetch(`${this._url}/cards/${id}/likes`, {
 			method: 'DELETE',
 			headers: this._headers,
 		}).then(this._getResponseData);
@@ -93,8 +92,11 @@ const config = {
 	//address: 'http://localhost:3000',
 	headers: {
 		'Content-type': 'application/json',
+		 Accept: "application/json",
 		'Authorization': `Bearer ${localStorage.getItem('token')}`,
 	  }
 };
+
 const api = new Api(config);
+
 export default api;

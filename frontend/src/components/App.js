@@ -42,7 +42,7 @@ function App() {
 				.checkToken(token)
 				.then(res => {
 					if (res) {
-						setUserEmail(res.data.email);
+						setUserEmail(res.email);
 					}
 					setLoggedIn(true);
 					history.push('/');
@@ -61,8 +61,8 @@ function App() {
 		if (loggedIn) {
 		Promise.all([api.getUserInfo(), api.getInitialCards()])
 			.then(([userData, cards]) => {
-				setCurrentUser(userData.userInfo);
-				setCards(cards.data.reverse());
+				setCurrentUser(userData);
+				setCards(cards.reverse());
 	}).catch(err => console.log(`Данные с сервера не получены. Ошибка: ${err}`));
 	}
     }, [loggedIn]);
@@ -127,7 +127,7 @@ function App() {
 	}
 
 	function handleCardLike(card) {
-		const isLiked = card.likes.some(i => i._id === currentUser._id);
+		const isLiked = card.likes.some(i => i === currentUser._id);
 		api
 			.changeLikeCardStatus(card._id, !isLiked, localStorage.token)
 			.then(newCard => {
@@ -165,7 +165,7 @@ function App() {
 	}
 
 	function handleLogin(email, password) {
-		return auth
+		auth
 			.authorization(email, password)
 			.then(data => {
 				setLoggedIn(true);
@@ -184,7 +184,7 @@ function App() {
 	}
 
 	function handleRegister(email, password) {
-		return auth
+		auth
 			.register(email, password)
 			.then((res) => {
 				localStorage.setItem('token', res.token)

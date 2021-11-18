@@ -1,5 +1,7 @@
-export const BASE_URL = 'https://api.mesto.autors.nomoredomains.icu';
-//export const BASE_URL = 'http://localhost:3000';
+//export const BASE_URL = 'https://api.mesto.autors.nomoredomains.icu';
+export const BASE_URL =  process.env.NODE_ENV === 'production'
+? 'https://api.mesto.autors.nomoredomains.icu'
+: 'http://localhost:3000';
 
 function getResponseData(res) {
 		return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
@@ -25,13 +27,12 @@ export const register = (email, password) => {
 		}).then((res) => getResponseData(res));
 }
 
-export const checkToken = (token) => {
-	console.log('getToken в utils/auth: ' + token)
+export const checkToken = () => {
 		return fetch(`${BASE_URL}/users/me`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${localStorage.getItem('token')}`,
+				//'Authorization': `Bearer ${localStorage.getItem('token')}`,
 			},
 		}).then((res) => getResponseData(res));
 }
