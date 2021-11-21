@@ -26,6 +26,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useUnifiedTopology: true,
 });
 
+require('dotenv').config();
+
 app.use(helmet());
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -83,5 +85,5 @@ app.use((err, req, res, next) => {
 const { PORT = 3000 } = process.env;
 
 app.listen(PORT, () => {
-  console.log(`Ссылка на сервер: http://localhost:${PORT}`);
+  console.log(`Ссылка на сервер ${PORT}`);
 });
