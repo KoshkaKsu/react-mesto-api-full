@@ -1,4 +1,3 @@
-//export const BASE_URL = 'https://api.mesto.autors.nomoredomains.icu';
 export const BASE_URL =  process.env.NODE_ENV === 'production'
 ? 'https://api.mesto.autors.nomoredomains.icu'
 : 'http://localhost:3000';
@@ -22,6 +21,7 @@ export const register = (email, password) => {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				"Access-Control-Allow-Origin": "https://mesto.autors.nomoredomains.work",
 			},
 			body: JSON.stringify({ email, password }),
 		}).then((res) => getResponseData(res));
@@ -36,4 +36,3 @@ export const checkToken = () => {
 			},
 		}).then((res) => getResponseData(res));
 }
-

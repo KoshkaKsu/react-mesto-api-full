@@ -1,5 +1,11 @@
+const address =  process.env.NODE_ENV === 'production'
+? 'https://api.mesto.autors.nomoredomains.icu'
+: 'http://localhost:3000';
+
+const token = localStorage.getItem("token");
+
 class Api {
-	constructor({ address, headers }) {
+	constructor(address, headers) {
 		this._url = address;
 		this._headers = headers;
 	}
@@ -87,16 +93,11 @@ class Api {
 	}
 }
 
-const config = {
-	address: 'https://api.mesto.autors.nomoredomains.icu',
-	//address: 'http://localhost:3000',
-	headers: {
-		'Content-type': 'application/json',
-		 Accept: "application/json",
-		'Authorization': `Bearer ${localStorage.getItem('token')}`,
-	  }
-};
-
-const api = new Api(config);
+const api = new Api( address, {
+	'Content-type': 'application/json',
+	 Accept: "application/json",
+	 Authorization: `Bearer ${token}`,
+     "Access-Control-Allow-Origin": "https://mesto.autors.nomoredomains.work",
+  });
 
 export default api;

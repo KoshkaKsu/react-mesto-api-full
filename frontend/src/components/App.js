@@ -42,9 +42,9 @@ function App() {
 				.then(res => {
 					if (res) {
 						setUserEmail(res.email);
+					    setLoggedIn(true);
+					    history.push('/');
 					}
-					setLoggedIn(true);
-					history.push('/');
 				})
 				.catch(err => {
 					if (err.status === 400) {
