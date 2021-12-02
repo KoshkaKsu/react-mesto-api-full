@@ -1,6 +1,4 @@
-export const BASE_URL =  process.env.NODE_ENV === 'production'
-? 'https://api.mesto.autors.nomoredomains.icu'
-: 'http://localhost:3000';
+export const BASE_URL = 'https://api.mesto.autors.nomoredomains.icu';
 
 function getResponseData(res) {
 		return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
@@ -9,6 +7,7 @@ function getResponseData(res) {
 export const authorization = (email, password) => {
 		return fetch(`${BASE_URL}/signin`, {
 			method: 'POST',
+			credentials: "include",
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -19,9 +18,10 @@ export const authorization = (email, password) => {
 export const register = (email, password) => {
 		return fetch(`${BASE_URL}/signup`, {
 			method: 'POST',
+			credentials: "include",
 			headers: {
 				'Content-Type': 'application/json',
-				"Access-Control-Allow-Origin": "https://mesto.autors.nomoredomains.work",
+
 			},
 			body: JSON.stringify({ email, password }),
 		}).then((res) => getResponseData(res));
@@ -30,6 +30,7 @@ export const register = (email, password) => {
 export const checkToken = () => {
 		return fetch(`${BASE_URL}/users/me`, {
 			method: 'GET',
+			credentials: "include",
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${localStorage.getItem('token')}`,
