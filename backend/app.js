@@ -1,23 +1,24 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const helmet = require('helmet');
 const { errors, celebrate, Joi } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/not-found-error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const mycors = require('./middlewares/cors');
 
 const app = express();
 
-const corsOptions = {
-  origin: ['http://localhost:3000', 'https://api.mesto.autors.nomoredomains.icu/signin', 'https://api.mesto.autors.nomoredomains.icu', 'https://mesto.autors.nomoredomains.work'],
+/* const corsOptions = {
+  origin: ['http://localhost:3000', 'https://api.mesto.autors.nomoredomains.icu', 'https://mesto.autors.nomoredomains.work'],
   credentials: true,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Methods', 'Access-Control-Request-Headers', 'Origin'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin',
+   'Access-Control-Allow-Methods', 'Access-Control-Request-Headers', 'Origin'],
   enablePreflight: true,
-};
+}; */
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
@@ -32,6 +33,7 @@ app.use(helmet());
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
+app.use(mycors);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -64,8 +66,6 @@ app.use('*', (req, res, next) => {
   next(new NotFoundError('Страница не найдена!'));
 });
 app.use('/', express.json());
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 app.use(errorLogger);
 app.use(errors());
 

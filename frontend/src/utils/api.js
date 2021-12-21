@@ -1,6 +1,8 @@
-export const address =  process.env.NODE_ENV === 'production'
+/* export const address =  process.env.NODE_ENV === 'production'
 ? 'https://api.mesto.autors.nomoredomains.icu'
-: 'http://localhost:3000';
+: 'http://localhost:3000'; */
+
+export const address = 'https://api.mesto.autors.nomoredomains.icu';
 
 const token = localStorage.getItem("token");
 
@@ -20,7 +22,10 @@ class Api {
 	getUserInfo() {
 		return fetch(`${this._url}/users/me`, {
 			method: 'GET',
-			headers: this._headers,
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			credentials: 'include',
 		}).then(this._getResponseData);
 	}
@@ -28,7 +33,10 @@ class Api {
 	getInitialCards() {
 		return fetch(`${this._url}/cards`, {
 			method: 'GET',
-			headers: this._headers,
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			credentials: 'include',
 		}).then(this._getResponseData);
 	}
@@ -36,7 +44,10 @@ class Api {
 	updateAvatar(newAvatarLink) {
 		return fetch(`${this._url}/users/me/avatar`, {
 			method: 'PATCH',
-			headers: this._headers,
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			credentials: 'include',
 			body: JSON.stringify({
 				avatar: newAvatarLink.avatar,
@@ -47,7 +58,10 @@ class Api {
 	editUserInfo(obj) {
 		return fetch(`${this._url}/users/me`, {
 			method: 'PATCH',
-			headers: this._headers,
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			credentials: 'include',
 			body: JSON.stringify({
 				name: obj.name,
@@ -59,7 +73,10 @@ class Api {
 	addCard(data) {
 		return fetch(`${this._url}/cards`, {
 			method: 'POST',
-			headers: this._headers,
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			credentials: 'include',
 			body: JSON.stringify({
 				name: data.name,
@@ -71,7 +88,10 @@ class Api {
 	setLike(id) {
 		return fetch(`${this._url}/cards/${id}/likes`, {
 			method: 'PUT',
-			headers: this._headers,
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			credentials: 'include',
 		}).then(this._getResponseData);
 	}
@@ -79,7 +99,10 @@ class Api {
 	unLike(id) {
 		return fetch(`${this._url}/cards/${id}/likes`, {
 			method: 'DELETE',
-			headers: this._headers,
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			credentials: 'include',
 		}).then(this._getResponseData);
 	}
@@ -87,7 +110,10 @@ class Api {
 	deleteCard(id) {
 		return fetch(`${this._url}/cards/${id}`, {
 			method: 'DELETE',
-			headers: this._headers,
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 			credentials: 'include',
 		}).then(this._getResponseData);
 	}
@@ -101,10 +127,6 @@ class Api {
 	}
 }
 
-const api = new Api( address, {
-	'Content-type': 'application/json',
-	'Accept': "application/json",
-	 Authorization: `Bearer ${token}`,
-  });
+const api = new Api( address);
 
 export default api;
